@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #4facfe, #90d1c3);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container h3 {
+            color: #ffe600;
+        }
+
+        .container p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #ffe600;
+        }
+
+        .container .success-icon {
+            font-size: 4rem;
+            color: #0f0;
+            margin-bottom: 20px;
+            animation: pop 0.5s ease;
+        }
+
+        .container .error-icon {
+            font-size: 4rem;
+            color: #f00;
+            margin-bottom: 20px;
+            animation: shake 0.5s ease;
+        }
+
+        .container a {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #90d1c3;
+            background: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container a:hover {
+            background: #00c2ce;
+            color: #fff;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            50% {
+                transform: translateX(5px);
+            }
+            75% {
+                transform: translateX(-5px);
+            }
+        }
+    </style>
+</head>
+<body th:attr="status=${status}, message=${message}, title=${title}">
+    <div class="container">
+        <!-- Success Message -->
+        <div id="success" style="display: none;">
+            <div class="success-icon">&#10003;</div>
+            <h1 id="success-title"></h1>
+            <p id="success-message"></p>
+            <!-- <a href="/login">Go to Login</a> -->
+        </div>
+
+        <!-- Failure Message -->
+        <div id="failure" style="display: none;">
+            <div class="error-icon">&#10060;</div>
+            <h1 id="failure-title"></h1>
+            <h3 id="failure-message"></h3>
+            <p>Please contact your administrator</p>
+        </div>
+    </div>
+
+    <script>
+        // Get the status and message from the body attributes
+        const registrationStatus = document.body.getAttribute('status');
+        const registrationMessage = document.body.getAttribute('message');
+        const registrationtitle = document.body.getAttribute('title');
+
+        if (registrationStatus === "success") {
+            const successContainer = document.getElementById('success');
+            const successMessage = document.getElementById('success-message');
+            const successTitle = document.getElementById('success-title');
+
+            if (successContainer && successMessage && successTitle) {
+                successContainer.style.display = 'block';
+                successMessage.textContent = registrationMessage || "Your registration was successful.";
+                successTitle.textContent = registrationtitle || "Registration Success";
+            }
+        } else if (registrationStatus === "failure") {
+            const failureContainer = document.getElementById('failure');
+            const failureMessage = document.getElementById('failure-message');
+            const failureTitle = document.getElementById('failure-title');
+
+            if (failureContainer && failureMessage) {
+                failureContainer.style.display = 'block';
+                failureMessage.textContent = registrationMessage || "There was an error during registration.";
+                failureTitle.textContent = registrationtitle || "Registration Failed";
+            }
+        }
+
+        // // Get the status from the body attribute
+        // const registrationStatus = document.body.getAttribute('status');
+        // const title = document.body.getAttribute('title');
+        // console.log("in2",title)
+
+        // console.log("in",registrationStatus)
+        // if (registrationStatus === "success") {
+        //     document.getElementById('success-message').style.display = 'block';
+        // } else if (registrationStatus === "failure") {
+        //     document.getElementById('failure-message').style.display = 'block';
+        // }
+        // document.getElementById('dyanamic-title').innerHTML = "<h1>" + title + "</h1";
+        // document.getElementById('dyanamic-message').textContent = document.body.getAttribute('message');
+        // console.log(document.getElementById('dyanamic-title'))
+    </script>
+</body>
+</html>
