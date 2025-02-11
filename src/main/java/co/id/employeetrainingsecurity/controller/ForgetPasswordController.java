@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import co.id.employeetrainingsecurity.entity.User;
 import co.id.employeetrainingsecurity.entity.dto.ForgetPasswordRequest;
@@ -20,6 +21,7 @@ import co.id.employeetrainingsecurity.service.UserService;
 import co.id.employeetrainingsecurity.util.EmailSender;
 import co.id.employeetrainingsecurity.util.GenerateString;
 
+@RestController
 @RequestMapping("/forget-password")
 public class ForgetPasswordController {
 
