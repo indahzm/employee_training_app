@@ -29,7 +29,7 @@ public class ForgetPasswordController {
 	private UserService userService;
 	
 	@Value("{expired.token.password.minute}")
-	private int expiredToken;
+	private String expiredToken;
 	
 	@Autowired
 	private EmailSender emailSender;
@@ -58,7 +58,7 @@ public class ForgetPasswordController {
 			Date dateNow = new Date(); 
             Calendar calendar = Calendar.getInstance(); 
             calendar.setTime(dateNow); 
-            calendar.add(Calendar.MINUTE, expiredToken); 
+            calendar.add(Calendar.MINUTE, Integer.valueOf(expiredToken)); 
             Date expirationDate = calendar.getTime(); 
 
 			user.setOtp(otp);
