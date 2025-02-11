@@ -52,6 +52,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	
     @Value("${BASEURL}") 
     private String baseUrl; 
+    
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String clientId;
+    
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    private String clientSecret;
+    
+    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
+    private String redirectUri;  
 
 //	private static final String APPLICATION_NAME = ""; 
 //	
@@ -110,7 +119,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             } 
             
 	        HttpHeaders headers = new HttpHeaders();
-	        String auth = "577901321751-mrinahrqlbqbfg8prdat8jkbnv5mdckl.apps.googleusercontent.com" + ":" + "password";
+	        String auth = clientId + ":" + "password";
 	        String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes(StandardCharsets.UTF_8));
 	        String authHeader = "Basic " + encodedAuth;
 	        headers.set("Authorization", authHeader);
@@ -171,9 +180,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // Membuat body request
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("code", code);
-        params.add("client_id", "577901321751-mrinahrqlbqbfg8prdat8jkbnv5mdckl.apps.googleusercontent.com");
-        params.add("client_secret", "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");
-        params.add("redirect_uri", "http://localhost:8080/Callback");
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("redirect_uri", redirectUri);
         params.add("grant_type", "authorization_code");
 
         HttpHeaders headers = new HttpHeaders();
