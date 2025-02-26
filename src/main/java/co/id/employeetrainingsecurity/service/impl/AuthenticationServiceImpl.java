@@ -132,8 +132,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 mapResponse.put("message", "SUKSESS"); 
                 mapResponse.put("type", "login");
                 user.setPassword(oldPassword); 
-                userService.save(user); 
-                return new AuthenticationResponse(mapResponse, ResponseConstant.DATA_SUKSES, String.valueOf(HttpStatus.OK.value()));
+                userService.save(user);
+                
+                return new AuthenticationResponse(new AuthenticationResponse(mapResponse, ResponseConstant.DATA_SUKSES, "login", String.valueOf(HttpStatus.OK.value())), ResponseConstant.DATA_SUKSES, String.valueOf(HttpStatus.OK.value()));
  
             } 
         } else { 
@@ -144,7 +145,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             registerModel.setName(profile.getName()); 
             registerModel.setPassword(profile.getId()); 
  
-    		AuthenticationResponse authenticationResponse = userService.registerManual(registerModel); 
+    		AuthenticationResponse authenticationResponse = userService.registerManual(registerModel);
+    		authenticationResponse.setType("register");
             return new AuthenticationResponse(authenticationResponse, ResponseConstant.DATA_SUKSES, String.valueOf(HttpStatus.OK.value()));
         }
         logger.info(">> End Success SignIn Google <<");
