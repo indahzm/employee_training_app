@@ -1,0 +1,988 @@
+{
+	"info": {
+		"_postman_id": "e0821967-3e48-4bca-999c-d5a33fa99d59",
+		"name": "Employee Training",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11683727"
+	},
+	"item": [
+		{
+			"name": "Karyawan",
+			"item": [
+				{
+					"name": "Find all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "page",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan/list",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan/100",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\": \"syarini\",\r\n    \"dob\": \"1996-01-01\",\r\n    \"status\": \"active\",\r\n    \"alamat\": \"jakarta\",\r\n    \"detailKaryawan\": {\r\n        \"nik\": \"123455\",\r\n        \"npwp\": \"12345677\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan/save",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 100,\r\n    \"nama\": \"syarini\",\r\n    \"dob\": \"1996-01-01\",\r\n    \"status\": \"active\",\r\n    \"alamat\": \"jakarta\",\r\n    \"detailKaryawan\": {\r\n        \"id\": 11,\r\n        \"nik\": \"123455\",\r\n        \"npwp\": \"12345677\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : \"100\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan/delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Training",
+			"item": [
+				{
+					"name": "Find all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "9c408b13-39d9-4037-82f6-2a0a0bec4a79",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/v1/idstar/training/list?page=0&size=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"training",
+								"list"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/v1/idstar/training/2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"training",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"tema\": \"JAVA DEVELOPER\", \r\n    \"pengajar\": \"RIKI ALDI PARI\" \r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/training/save",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"training",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"id\": \"100\", \r\n    \"tema\": \"GOLANG DEVELOPER\", \r\n    \"pengajar\": \"RIKI A PARI\" \r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/training/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"training",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/training/delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"training",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Karyawan Training",
+			"item": [
+				{
+					"name": "Find all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "98d3985e-22a3-425f-b538-116b06c4a0f9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan-training/list?page=0&size=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan-training",
+								"list"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan-training/100",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan-training",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"karyawan\":{ \r\n        \"id\":\"5\" \r\n    }, \r\n   \"training\":{ \r\n        \"id\":\"2\" \r\n    }, \r\n    \"tanggal\":\"2023-01-01 13:00:00\" \r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan-training/save",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan-training",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"id\":6, \r\n    \"karyawan\":{ \r\n        \"id\":\"12\" \r\n    }, \r\n   \"training\":{ \r\n        \"id\":\"2\" \r\n    }, \r\n    \"tanggal\":\"2023-01-01 13:00:00\" \r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan-training/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan-training",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/karyawan-training/delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"karyawan-training",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rekening",
+			"item": [
+				{
+					"name": "Find all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "page",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/rekening/list",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"rekening",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/v1/idstar/rekening/100",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"rekening",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"nama\": \"Riki Aldi Pari\", \r\n    \"jenis\": \"BCA\", \r\n    \"rekening\": \"12345678\", \r\n    \"alamat\": \"jakarta\", \r\n    \"karyawan\": { \r\n        \"id\": 6 \r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/rekening/save",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"rekening",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"id\": \"100\", \r\n    \"nama\": \"Riki Aldi Pari\", \r\n    \"jenis\": \"BCA\", \r\n    \"rekening\": \"12345678\", \r\n    \"alamat\": \"jakarta\", \r\n    \"karyawan\": { \r\n        \"id\": \"5\" \r\n    } \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/rekening/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"rekening",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/idstar/rekening/delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"idstar",
+								"rekening",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "File",
+			"item": [
+				{
+					"name": "Show File",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "81030d8d-0a76-48f2-911c-016a8e193f96",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://employeetrainingapp-production.up.railway.app/v1/showFile/26022025052854idstar.png",
+							"protocol": "http",
+							"host": [
+								"employeetrainingapp-production",
+								"up",
+								"railway",
+								"app"
+							],
+							"path": [
+								"v1",
+								"showFile",
+								"26022025052854idstar.png"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "81030d8d-0a76-48f2-911c-016a8e193f96",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"contentType": "image/png",
+									"type": "file",
+									"src": "6nqQOYzm3/idstar.png"
+								},
+								{
+									"key": "",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/v1/upload",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"upload"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST -F \"file=C:\\Users\\indah.zakiyyah_idsta\\Pictures\\Screenshots.png;type=image/png\" http://localhost:8080/v1/upload"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"username\":\"indah.zakiyyah@idstar.group\", \r\n    \"name\": \"Indah\", \r\n    \"phone_number\": \"08212121212\", \r\n    \"domicile\": \"Bukittinggi\", \r\n    \"gender\": \"Perempuan\", \r\n    \"password\":\"indah1234\", \r\n    \"fullname\":\"Indah Zakiyyah Muchtar\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user-register/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user-register",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"username\":\"indah.zakiyyah@idstar.group\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user-register/send-otp",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user-register",
+								"send-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Confirm Otp",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"username\":\"indah.zakiyyah@idstar.group\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user-register/register-confirm-otp/359246",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user-register",
+								"register-confirm-otp",
+								"359246"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"username\":\"indah.zakiyyah@idstar.group\", \r\n    \"password\":\"newpassword1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/user-login/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user-login",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Oauth Token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "577901321751-mrinahrqlbqbfg8prdat8jkbnv5mdckl.apps.googleusercontent.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/oauth/token?grant_type=password&username=zakiyyahindahm@gmail.com&password=indah1234",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"oauth",
+								"token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "password"
+								},
+								{
+									"key": "username",
+									"value": "zakiyyahindahm@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "indah1234"
+								},
+								{
+									"key": "client_id",
+									"value": "577901321751-mrinahrqlbqbfg8prdat8jkbnv5mdckl.apps.googleusercontent.com",
+									"disabled": true
+								},
+								{
+									"key": "client_secret",
+									"value": "password",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signin Google",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "accessToken",
+									"value": "ya29.a0AeXRPp7BDDpWzFWV41sPdn7eL-UB5ETulLpCATtC2IbHE0TZgrmi4vvJpaHiN2BDjO9lLEPymZ-08tJXFWa-DLY1upZ_kCjoT3Mn4UssWR1PX5ltZTuerdm2JG1ENg9UGcBQ0-TWD1UfQAU8GOwuSZoxSu6EQeZApBwGuTrwSWkaCgYKAfsSARASFQHGX2MiqX0CeLX-dlOhALZee702ow0178",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/user-login/signin_google",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user-login",
+								"signin_google"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Password",
+			"item": [
+				{
+					"name": "Forget Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"indah.zakiyyah@idstar.group\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/forget-password/send",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"forget-password",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate Forget Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"indah.zakiyyah@idstar.group\",\r\n    \"otp\" : \"353844\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/forget-password/validate",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"forget-password",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"indah.zakiyyah@idstar.group\",\r\n    \"newPassword\" : \"newpassword1234\",\r\n    \"otp\" : \"353844\",\r\n    \"confirmNewPassword\" : \"newpassword1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/forget-password/change-password",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"forget-password",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
