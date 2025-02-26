@@ -1,10 +1,18 @@
 package co.id.employeetrainingsecurity.controller;
 
+import java.io.IOException;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,4 +61,15 @@ public class CommonController {
 		return model; 
     }
 	
+    @PostMapping("/api/user-login/signin_google") 
+    @ResponseBody
+    public ResponseEntity<?> repairGoogleSigninAction(@RequestParam MultiValueMap<String, String> parameters) throws IOException { 
+ 
+        Map<String, String> map = parameters.toSingleValueMap(); 
+        String accessToken = map.get("accessToken"); 
+ 
+        AuthenticationResponse authenticationResponse = authenticationService.signInGoogle(accessToken);
+        return new ResponseEntity<>(authenticationResponse.getStatus().equals(String.valueOf(200)) ? authenticationResponse.getData() : authenticationResponse, 
+        		HttpStatus.valueOf(Integer.valueOf(authenticationResponse.getStatus()))); 
+    }
 }
