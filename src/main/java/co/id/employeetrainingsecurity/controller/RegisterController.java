@@ -72,6 +72,7 @@ public class RegisterController {
 					HttpStatus.BAD_REQUEST);
 		}
 		userExist.setOtp(null);
+		userExist.setOtpExpiredDate(null);
 		userExist.setEnabled(true);
 		userExist.setCredentialsNonExpired(true);
         userService.save(userExist); 

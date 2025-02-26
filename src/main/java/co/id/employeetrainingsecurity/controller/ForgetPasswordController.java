@@ -19,6 +19,7 @@ import co.id.employeetrainingsecurity.entity.dto.AuthenticationResponse;
 import co.id.employeetrainingsecurity.entity.dto.ResponseConstant;
 import co.id.employeetrainingsecurity.service.UserService;
 import co.id.employeetrainingsecurity.util.EmailSender;
+import co.id.employeetrainingsecurity.util.EmailTemplate;
 import co.id.employeetrainingsecurity.util.GenerateString;
 
 @RestController
@@ -28,7 +29,7 @@ public class ForgetPasswordController {
 	@Autowired
 	private UserService userService;
 	
-	@Value("{expired.token.password.minute}")
+	@Value("${expired.token.password.minute}")
 	private String expiredToken;
 	
 	@Autowired
@@ -36,6 +37,9 @@ public class ForgetPasswordController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EmailTemplate emailTemplate;
 	
 	@PostMapping("/send")
 	public ResponseEntity<AuthenticationResponse> sendEmailPassword(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
@@ -51,26 +55,23 @@ public class ForgetPasswordController {
 					(ResponseConstant.DATA_NOT_FOUND.replace("${object}", "User"), "404", ResponseConstant.STATUS_NOT_FOUD), HttpStatus.valueOf(404));
 		}
 		
-		String otp = user.getOtp();
-		if (user.getOtp() == null || user.getOtp() == "" || user.getOtpExpiredDate().before(new Date())) {
-			otp = GenerateString.generateOtp();
-			
-			Date dateNow = new Date(); 
-            Calendar calendar = Calendar.getInstance(); 
-            calendar.setTime(dateNow); 
-            calendar.add(Calendar.MINUTE, Integer.valueOf(expiredToken)); 
-            Date expirationDate = calendar.getTime(); 
+		String otp = GenerateString.generateOtp();
+		
+		Date dateNow = new Date(); 
+        Calendar calendar = Calendar.getInstance(); 
+        calendar.setTime(dateNow); 
+        calendar.add(Calendar.MINUTE, Integer.valueOf(expiredToken)); 
+        Date expirationDate = calendar.getTime(); 
 
-			user.setOtp(otp);
-			user.setOtpExpiredDate(expirationDate);
-			userService.save(user);
-		}
+		user.setOtp(otp);
+		user.setOtpExpiredDate(expirationDate);
+		userService.save(user);
 		
-		String template = "";
-		template = template.replaceAll("{OTP}", otp);
-		template = template.replaceAll("{USERNAME}", user.getUsername());
+		String template = emailTemplate.getResetPassword();;
+		template = template.replaceAll("\\{\\{OTP}}", otp);
+		template = template.replaceAll("\\{\\{USERNAME}}", user.getUsername());
 		
-		emailSender.sendAsync(user.getUsername(), "Chute - Forget Password", template); 
+		emailSender.sendAsync(user.getUsername(), "IDStar - Forget Password", template); 
 		
 		return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse
 				(ResponseConstant.DATA_SUKSES, "200", ResponseConstant.STATUS_SUKSES), HttpStatus.valueOf(200));
@@ -92,10 +93,12 @@ public class ForgetPasswordController {
 					("OTP Code mot match", "400", ResponseConstant.STATUS_BAD_REQUEST), HttpStatus.valueOf(400));
 		}
 		
-		if (user.getOtpExpiredDate().before(new Date())) {
+		if (user.getOtpExpiredDate() != null && user.getOtpExpiredDate().before(new Date())) {
 			return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse
 					("OTP Code not valid", "400", ResponseConstant.STATUS_BAD_REQUEST), HttpStatus.valueOf(400));
 		}
+		user.setOtpExpiredDate(null);
+		userService.save(user);
 		
 		return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse
 				(ResponseConstant.DATA_SUKSES, "200", ResponseConstant.STATUS_SUKSES), HttpStatus.valueOf(200));
@@ -130,8 +133,17 @@ public class ForgetPasswordController {
 					(ResponseConstant.DATA_NOT_FOUND.replace("${object}", "User"), "404", ResponseConstant.STATUS_NOT_FOUD), HttpStatus.valueOf(404));
 		}
 		
+		if(user.getOtpExpiredDate() != null || user.getOtp() == null) {
+			return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse
+					("Please check your email. Validate your request using confirmation code!", "400", ResponseConstant.STATUS_BAD_REQUEST), HttpStatus.valueOf(400));
+		}
+		
+		if (!user.getOtp().equals(forgetPasswordRequest.getOtp())) {
+			return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse
+					("OTP Code mot match", "400", ResponseConstant.STATUS_BAD_REQUEST), HttpStatus.valueOf(400));
+		}
+		
 		user.setPassword(passwordEncoder.encode(forgetPasswordRequest.getNewPassword()));
-		user.setOtpExpiredDate(null);
 		user.setOtp(null);
 		userService.save(user);
 		
