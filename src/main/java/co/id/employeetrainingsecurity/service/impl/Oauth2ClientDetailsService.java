@@ -13,7 +13,7 @@ import co.id.employeetrainingsecurity.repository.ClientRepository;
 @Service
 public class Oauth2ClientDetailsService implements ClientDetailsService { 
  
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(Oauth2ClientDetailsService.class.getName());
 	
     @Autowired
     private ClientRepository clientRepository; 

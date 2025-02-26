@@ -18,6 +18,5 @@ public interface RekeningRepository extends PagingAndSortingRepository<RekeningE
 	RekeningEntity save(RekeningEntity rekening);
 	Page<RekeningEntity> findAll(Pageable pageable);
 	List<RekeningEntity> findAllByKaryawanId(Long id);
-//	void saveAll(List<RekeningEntity> rekeningList);
 	
 }

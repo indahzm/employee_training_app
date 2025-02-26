@@ -37,7 +37,7 @@ public class RegisterController {
         		HttpStatus.OK);
 	}
 	
-    @PostMapping("/send-otp")//send OTP 
+    @PostMapping("/send-otp") 
     public ResponseEntity<?> sendEmailegister(@RequestBody RegisterRequest registerRequest) {
     	
         String message = "Thanks, please check your email for activation."; 
@@ -56,7 +56,7 @@ public class RegisterController {
         		HttpStatus.OK);
     } 
     
-    @GetMapping("/register-confirm-otp/{otp}")//send OTP 
+    @GetMapping("/register-confirm-otp/{otp}")
     public ResponseEntity<?> registerConfirmOtp(@PathVariable(required = true) String otp, @RequestBody @Nullable RegisterRequest registerRequest) { 
         String message = "Your account has been active. Please login with your account"; 
         
@@ -81,7 +81,7 @@ public class RegisterController {
         		HttpStatus.OK);    
     } 
     
-    @GetMapping("/web/index/{otp}")//send OTP 
+    @GetMapping("/web/index/{otp}")
     public ModelAndView registerWebIndex(@PathVariable(required = true) String otp) {
     	ModelAndView model = new ModelAndView();
     	model.setViewName("success_register");

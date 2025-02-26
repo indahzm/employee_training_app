@@ -6,12 +6,9 @@ import java.util.Map;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
-//import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-//import io.jsonwebtoken.Jwts;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,7 +23,7 @@ import co.id.employeetrainingsecurity.entity.dto.AuthenticationResponse;
 import co.id.employeetrainingsecurity.entity.dto.LoginRequest;
 import co.id.employeetrainingsecurity.service.AuthenticationService;
 import co.id.employeetrainingsecurity.service.UserService;
-//import co.id.employeetrainingsecurity.util.JwtUtils;
+
 
 @RestController
 @RequestMapping("/user-login")
@@ -61,37 +58,4 @@ public class LoginController {
         		HttpStatus.valueOf(Integer.valueOf(authenticationResponse.getStatus()))); 
     }
     
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-    
-//    @Autowired
-//    private JwtUtils jwtUtils;
-	
-//	@PostMapping("/login")
-//    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest loginRequest) {
-//        try {
-//            Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                    loginRequest.getUsername(),
-//                    loginRequest.getPassword()
-//                )
-//            );
-//
-//            String accessToken = jwtUtils.generateToken(loginRequest.getUsername());
-//            String refreshToken = jwtUtils.generateRefreshToken(loginRequest.getUsername());
-//
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("access_token", accessToken);
-//            response.put("refresh_token", refreshToken);
-//            response.put("scope", "read write");
-//            response.put("token_type", "bearer");
-//            response.put("expires_in", 28799);
-//            response.put("jti", "unique-token-id");
-//            return ResponseEntity.ok(response);
-//
-//        } catch (Exception ex) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//    }
-
 }

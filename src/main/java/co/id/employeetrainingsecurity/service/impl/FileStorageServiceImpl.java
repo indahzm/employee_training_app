@@ -24,7 +24,7 @@ import co.id.employeetrainingsecurity.util.FileStorageProperties;
 @Service
 public class FileStorageServiceImpl implements FileStorageService{
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(FileStorageServiceImpl.class.getName());
 	
 	private final Path fileStorageLocation;
 	Date date = new Date();
@@ -45,15 +45,11 @@ public class FileStorageServiceImpl implements FileStorageService{
 	@Override
 	public String storeFile(MultipartFile file) {
 		logger.info(">> Start Store File <<");
-		// Normalize file name
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//		String date_name = strDate+file;
 		try {
-			// Check if the file's name contains d characters
 			if(fileName.contains("..")) {
 				throw new FileStorageException("Sorry! Filename contains d path sequence " + fileName);
 			}
-			// Copy file to the target location (Replacing existingfile with the same name)
 			Path targetLocation = this.fileStorageLocation.resolve(fileName);
 			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 			return fileName;

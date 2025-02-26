@@ -68,6 +68,9 @@ public class UserServiceImpl implements UserService {
 	@Value("${expired.token.password.minute}")
 	private String expiredToken;
 	
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String clientId;
+	
 	@Override
 	public User findByUsername(String username) {
 		User user = userRepository.findByUsername(username);
@@ -174,7 +177,7 @@ public class UserServiceImpl implements UserService {
 			}
 			
 	        HttpHeaders headers = new HttpHeaders();
-	        String auth = "577901321751-mrinahrqlbqbfg8prdat8jkbnv5mdckl.apps.googleusercontent.com" + ":" + "password";
+	        String auth = clientId + ":" + "password";
 	        String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes(StandardCharsets.UTF_8));
 	        String authHeader = "Basic " + encodedAuth;
 	        headers.set("Authorization", authHeader);
@@ -182,9 +185,6 @@ public class UserServiceImpl implements UserService {
 	        String url = baseUrl + "oauth/token?username=" + loginRequest.getUsername() + 
 	                "&password=" + loginRequest.getPassword() + 
 	                "&grant_type=password";
-//	        String url = baseUrl + "/oauth/token?grant_type=password&username=zakiyyahindahm@gmail.com&password=indah1234";
-//	                "&client_id=" + "577901321751-mrinahrqlbqbfg8prdat8jkbnv5mdckl.apps.googleusercontent.com" +
-//	                "&client_secret=" + "password"; 
 			ResponseEntity<Map> response = restTemplateBuilder.build().exchange(url, HttpMethod.POST, new HttpEntity<>(headers), new ParameterizedTypeReference<Map>() {}); 
 
 	        if (response.getStatusCode() == HttpStatus.OK) { 

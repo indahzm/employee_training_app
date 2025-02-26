@@ -14,20 +14,7 @@ import co.id.employeetrainingsecurity.repository.UserRepository;
 @Service
 public class OauthUserServiceImpl implements UserDetailsService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class.getName());
-	
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        // Contoh hardcode user. Gunakan database di production
-//        if ("admin".equals(username)) {
-//            return User.builder()
-//                .username("admin")
-//                .password(new BCryptPasswordEncoder().encode("admin"))
-//                .roles("USER")
-//                .build();
-//        }
-//        throw new UsernameNotFoundException("User not found");
-//    }
+	private static final Logger logger = LoggerFactory.getLogger(OauthUserServiceImpl.class.getName());
 	
     @Autowired 
     private UserRepository userRepository; 

@@ -43,7 +43,7 @@ import co.id.employeetrainingsecurity.service.UserService;
 @Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class.getName());
 	
 	@Autowired
 	private UserService userService;
@@ -65,23 +65,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     
     @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
     private String redirectUri;  
-
-//	private static final String APPLICATION_NAME = ""; 
-//	
-//	private static final File DATA_STORE_DIR = new File(System.getProperty("user.home"), ".store/oauth2_sample"); 
-//	private static FileDataStoreFactory dataStoreFactory; 
-//	     
-//	private static HttpTransport httpTransport; 
-//	     
-//	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance(); 
-//	  
-//	/** OAuth 2.0 scopes. */ 
-//	private static final List<String> SCOPES = Arrays.asList(
-//		"https://www.googleapis.com/auth/userinfo.profile", 
-//	    "https://www.googleapis.com/auth/userinfo.email"); 
-//	  
-//	private static Oauth2 oauth2; 
-//	private static GoogleClientSecrets clientSecrets; 
 	
 	@Override
 	@SuppressWarnings({ "rawtypes", "deprecation" })
@@ -92,7 +75,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Map<String, Object> mapResponse = new HashMap<>(); 
         
 		GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken); 
-        System.out.println("access_token user=" + accessToken); 
         Oauth2 oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName( 
                 "Oauth2").build(); 
         Userinfoplus profile= null; 
@@ -119,12 +101,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
  
  
             String oldPassword = user.getPassword(); 
-//            Boolean isPasswordMatches = true; 
             if (!passwordEncoder.matches(register.getPassword(), oldPassword)) {
             	user.setPassword(passwordEncoder.encode(register.getPassword()));
             	userService.save(user);
-//                userService.updatePassword(user.getId(), passwordEncoder.encode(register.getPassword())); 
-//                isPasswordMatches = false; 
             } 
             
 	        HttpHeaders headers = new HttpHeaders();
@@ -152,7 +131,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 mapResponse.put("code", 200); 
                 mapResponse.put("message", "SUKSESS"); 
                 mapResponse.put("type", "login");
-                //update old password : wajib 
                 user.setPassword(oldPassword); 
                 userService.save(user); 
                 return new AuthenticationResponse(mapResponse, ResponseConstant.DATA_SUKSES, String.valueOf(HttpStatus.OK.value()));
@@ -160,23 +138,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             } 
         } else { 
         	logger.info(">> SignIn Google New User <<");
-//            register 
             RegisterRequest registerModel = new RegisterRequest(); 
             registerModel.setEmail(profile.getEmail()); 
             registerModel.setUsername(profile.getEmail());
             registerModel.setName(profile.getName()); 
             registerModel.setPassword(profile.getId()); 
  
-    		AuthenticationResponse authenticationResponse = userService.registerManual(registerModel);
-//    		return new ResponseEntity<>(authenticationResponse,
-//            		HttpStatus.OK);
-    		
-//            ResponseEntity<?> mapRegister = userService.registerManual(registerModel); 
-//            mapResponse.put("code:", mapRegister.getStatusCode()); 
-//            mapResponse.put("message", mapRegister.getBody() != null ? (mapRegister.getBody()).get("message") : "Not Success"); 
-//            mapResponse.put("type", "register"); 
-//            mapResponse.put("data", mapRegister.getBody());
- 
+    		AuthenticationResponse authenticationResponse = userService.registerManual(registerModel); 
             return new AuthenticationResponse(authenticationResponse, ResponseConstant.DATA_SUKSES, String.valueOf(HttpStatus.OK.value()));
         }
         logger.info(">> End Success SignIn Google <<");
@@ -192,7 +160,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String tokenEndpoint = "https://oauth2.googleapis.com/token";
 
-        // Membuat body request
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("code", code);
         params.add("client_id", clientId);
@@ -205,16 +172,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
-        // Mengirim request ke endpoint token Google
         ResponseEntity<String> response = restTemplate.postForEntity(tokenEndpoint, request, String.class);
 
-        // Mengambil access token dari response
         if (response.getStatusCode() == HttpStatus.OK) {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 JsonNode jsonNode = objectMapper.readTree(response.getBody());
                 String accessToken = jsonNode.get("access_token").asText();
-                System.out.println("Access Token: " + accessToken);
+                logger.info("Access Token: " + accessToken);
                 return signInGoogle(accessToken);
             } catch (Exception e) {
             	logger.info(">> Error Change code : " + e.getMessage() + " <<");
@@ -225,39 +190,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return null;
     }
 	
-//	private static Credential authorize() throws Exception { 
-//		clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(EmployeeTrainingSecurityApplication.class.getResourceAsStream("/client_secrets.json"))); 
-//		if (clientSecrets.getDetails().getClientId().startsWith("Enter") 
-//		                 || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) { 
-//			System.out.println("Enter Client ID and Secret fromhttps://code.google.com/apis/console/ " 
-//		                 + "into oauth2-cmdline sample/src/main/resources/client_secrets.json"); 
-//			System.exit(1); 
-//		} 
-//		
-//		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-//				httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setDataStoreFactory(dataStoreFactory).build(); 
-//	    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user"); 
-//	}
-//	
-//    private static void tokenInfo(String accessToken) throws IOException { 
-//        header("Validating a token"); 
-//        Tokeninfo tokeninfo = oauth2.tokeninfo().setAccessToken(accessToken).execute(); 
-//        System.out.println(tokeninfo.toPrettyString()); 
-//        if (!tokeninfo.getAudience().equals(clientSecrets.getDetails().getClientId())) { 
-//            System.err.println("ERROR: audience does not match our client ID!"); 
-//        } 
-//    } 
-// 
-//    private static void userInfo() throws IOException { 
-//        header("Obtaining User Profile Information"); 
-//        Userinfoplus userinfo = oauth2.userinfo().get().execute(); 
-//        System.out.println(userinfo.toPrettyString()); 
-//    }
-//    
-//    static void header(String name) { 
-//        System.out.println(); 
-//        System.out.println("================== " + name + " =================="); 
-//        System.out.println(); 
-//    } 
-
 }

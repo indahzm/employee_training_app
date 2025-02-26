@@ -1,6 +1,7 @@
 package co.id.employeetrainingsecurity.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -18,6 +19,9 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @Configuration 
 @EnableAuthorizationServer 
 public class AuthorizationServer extends AuthorizationServerConfigurerAdapter { 
+	
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String clientId;
 	
 	@Autowired
 	@Lazy
@@ -50,7 +54,7 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 	public void configure (ClientDetailsServiceConfigurer clients) throws Exception
 	{
 		clients
-			.inMemory().withClient("577901321751-mrinahrqlbqbfg8prdat8jkbnv5mdckl.apps.googleusercontent.com")
+			.inMemory().withClient(clientId)
 			.authorizedGrantTypes("password", "implicit", "refresh_token", "authorization_code").autoApprove(true)
 			.secret(bCryptPasswordEncoder.encode("password")).scopes("read", "write")
 			.accessTokenValiditySeconds(72000)

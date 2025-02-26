@@ -75,12 +75,12 @@ public class FileController {
 		String contentType = null;
 		
 		try {
-			System.out.println("resource.getFile().getAbsolutePath" + 
+			logger.info("resource.getFile().getAbsolutePath" + 
 					resource.getFile().getAbsolutePath());
 			
 			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
 		} catch (IOException e) {
-			logger.info("Could not determine file type."); 
+			logger.error("Could not determine file type."); 
 		}
 		
 		if (contentType == null) {
