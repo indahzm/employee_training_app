@@ -9,6 +9,8 @@ import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ import co.id.employeetrainingsecurity.util.FileStorageProperties;
 
 @Service
 public class FileStorageServiceImpl implements FileStorageService{
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class.getName());
+	
 	private final Path fileStorageLocation;
 	Date date = new Date();
 	SimpleDateFormat formatter = new SimpleDateFormat("ddMyyyyhhmmss");
@@ -33,16 +38,16 @@ public class FileStorageServiceImpl implements FileStorageService{
 		try {
 			Files.createDirectories(this.fileStorageLocation);
 		} catch (IOException e) {
-//			throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
+			throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", e);
 		}
 	}
 	
 	@Override
 	public String storeFile(MultipartFile file) {
+		logger.info(">> Start Store File <<");
 		// Normalize file name
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 //		String date_name = strDate+file;
-		System.out.println("ini==="+fileName);
 		try {
 			// Check if the file's name contains d characters
 			if(fileName.contains("..")) {
@@ -51,16 +56,16 @@ public class FileStorageServiceImpl implements FileStorageService{
 			// Copy file to the target location (Replacing existingfile with the same name)
 			Path targetLocation = this.fileStorageLocation.resolve(fileName);
 			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-			System.out.println("ini==2="+fileName);
-			System.out.println("ini==3="+targetLocation);
 			return fileName;
-		} catch (IOException ex) {
-			throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+		} catch (IOException e) {
+			logger.error(">> Error Store File : " + e.getMessage() + " <<");
+			throw new FileStorageException("Could not store file " + fileName + ". Please try again!", e);
 		}
 	}
 	
 	@Override
 	public Resource loadFileAsResource(String fileName) {
+		logger.info(">> Start Load File <<");
 		Resource resource = null;
 		try {
 			Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
@@ -68,13 +73,12 @@ public class FileStorageServiceImpl implements FileStorageService{
 			if(resource.exists()) {
 				return resource;
 			} else {
-				System.out.println("ini saya= "+filePath);
-				System.out.println("ini saya 2=" +filePath.toUri()); 
-	            System.out.println("ini saya 3= "+filePath.toAbsolutePath());
+				logger.error(">> Error : File not found<<");
 	            throw new FileStorageException("File not found " + fileName);
 			}
-		} catch (MalformedURLException ex) {
-			throw new FileStorageException("File not found " + fileName, ex);
+		} catch (MalformedURLException e) {
+			logger.error(">> Error : File not found<<");
+			throw new FileStorageException("File not found " + fileName, e);
 		}
 	} 
 

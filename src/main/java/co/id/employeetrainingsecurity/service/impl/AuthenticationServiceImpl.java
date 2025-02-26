@@ -5,6 +5,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -40,6 +42,8 @@ import co.id.employeetrainingsecurity.service.UserService;
 @Service
 @Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class.getName());
 	
 	@Autowired
 	private UserService userService;
@@ -80,7 +84,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //	private static GoogleClientSecrets clientSecrets; 
 	
 	@Override
+	@SuppressWarnings({ "rawtypes", "deprecation" })
 	public AuthenticationResponse signInGoogle(String accessToken) {
+		
+		logger.info(">> Start SignIn Google <<");
 		
         Map<String, Object> mapResponse = new HashMap<>(); 
         
@@ -93,11 +100,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         	profile = oauth2.userinfo().get().execute(); 
             profile.toPrettyString(); 
         } catch (Exception e) {
+        	logger.error(">> Error SignIn Google : " + e.getMessage() + " <<");
             return new AuthenticationResponse("Bad Gateway", "Bad Gateway", String.valueOf(HttpStatus.BAD_GATEWAY.value()));
 		
         } 
         User user = userService.findByUsername(profile.getEmail()); 
         if (null != user) { 
+        	logger.info(">> SignIn Google User Exist <<");
             if(!user.isEnabled()) {
                 return new AuthenticationResponse("Unauthorized", "Your Account is disable. Please chek your email for activation", String.valueOf(HttpStatus.UNAUTHORIZED.value()));
             }
@@ -127,6 +136,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	        String url = baseUrl + "oauth/token?username=" + register.getUsername() + 
 	                "&password=" + register.getPassword() + 
 	                "&grant_type=password";
+	        
 			ResponseEntity<Map> response = restTemplateBuilder.build().exchange(url, HttpMethod.POST, new HttpEntity<>(headers), new ParameterizedTypeReference<Map>() {}); 
  
             if (response.getStatusCode() == HttpStatus.OK) { 
@@ -149,6 +159,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
  
             } 
         } else { 
+        	logger.info(">> SignIn Google New User <<");
 //            register 
             RegisterRequest registerModel = new RegisterRequest(); 
             registerModel.setEmail(profile.getEmail()); 
@@ -168,11 +179,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
  
             return new AuthenticationResponse(authenticationResponse, ResponseConstant.DATA_SUKSES, String.valueOf(HttpStatus.OK.value()));
         }
+        logger.info(">> End Success SignIn Google <<");
         return new AuthenticationResponse(mapResponse, ResponseConstant.DATA_SUKSES, String.valueOf(HttpStatus.OK.value()));
 	}
 	
 	@Override
     public AuthenticationResponse exchangeCodeForAccessToken(String code) {
+		
+        logger.info(">> Change code with access token <<");
+        
         RestTemplate restTemplate = new RestTemplate();
 
         String tokenEndpoint = "https://oauth2.googleapis.com/token";
@@ -202,6 +217,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 System.out.println("Access Token: " + accessToken);
                 return signInGoogle(accessToken);
             } catch (Exception e) {
+            	logger.info(">> Error Change code : " + e.getMessage() + " <<");
                 e.printStackTrace();
             }
         }

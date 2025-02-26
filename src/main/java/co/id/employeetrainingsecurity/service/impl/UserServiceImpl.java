@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -39,6 +41,8 @@ import co.id.employeetrainingsecurity.util.GenerateString;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class.getName());
 
     @Value("${BASEURL}") 
     private String baseUrl; 
@@ -85,6 +89,7 @@ public class UserServiceImpl implements UserService {
 	public AuthenticationResponse registerManual(RegisterRequest registerRequest) {
 		try {
 			
+			logger.info(">> Start Manual Register <<");
 			User exist = userRepository.findByUsername(registerRequest.getUsername().toLowerCase());
 			
 			if (exist != null) {
@@ -110,6 +115,7 @@ public class UserServiceImpl implements UserService {
 			save(user);
 			return new AuthenticationResponse(user, ResponseConstant.STATUS_SUKSES, "200");
 		} catch(Exception e) {
+			logger.error(">> Error Register : " + e.getMessage() + " <<");
 			return new AuthenticationResponse(e.getMessage(), ResponseConstant.STATUS_ERROR, "500");
 		}
 	}
@@ -120,6 +126,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public void sendEmailOtp(User user, String urlOtp) {
+		logger.info(">> Start Send Email Otp Register <<");
+		
 		String template = emailTemplate.getRegistrationTemplate();
 		
         Date dateNow = new Date(); 
@@ -140,11 +148,14 @@ public class UserServiceImpl implements UserService {
         template = template.replaceAll("\\{\\{URL}}", url);
         
         emailSender.sendAsync(user.getUsername(), "Register", template);
+        logger.info(">> End Send Email Otp Register <<");
 	}
 
     @SuppressWarnings("rawtypes")
 	@Override
 	public AuthenticationResponse login(LoginRequest loginRequest) {
+    	
+    	logger.info(">> Start Login <<");
 		try {
 			Map<String, Object> map = new HashMap<>();
 			User user = userRepository.findByUsername(loginRequest.getUsername());
@@ -199,14 +210,15 @@ public class UserServiceImpl implements UserService {
 		    	return new AuthenticationResponse(ResponseConstant.DATA_NOT_FOUND.replace("${object}", "User"), ResponseConstant.STATUS_NOT_FOUD, "404");
 		    }
 		} catch (HttpStatusCodeException e) { 
+			logger.error(">> Error Login : " + e + "<<");
 		    e.printStackTrace(); 
 		    if (e.getStatusCode() == HttpStatus.BAD_REQUEST) { 
 		    	return new AuthenticationResponse("Invalid login", ResponseConstant.STATUS_BAD_REQUEST, "400");
 		    } 
 		    return new AuthenticationResponse("error: " + e, ResponseConstant.STATUS_ERROR, String.valueOf(e.getStatusCode().value()));
 		} catch (Exception e) { 
+			logger.error(">> Error Login : " + e + "<<");
 		    e.printStackTrace(); 
-		
 		    return new AuthenticationResponse("error: " + e, ResponseConstant.STATUS_ERROR, String.valueOf(500));
 		} 
 	} 

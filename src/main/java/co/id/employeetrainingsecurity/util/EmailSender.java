@@ -42,9 +42,9 @@ public class EmailSender {
 
         boolean success = false; 
         try { 
-            logger.info("Sending email to: "+email); 
-            logger.info("Sending email from: "+from); 
-            logger.info("Sending email with subject: "+subject); 
+            logger.info(">> Sending email to: "+email + " <<"); 
+            logger.info(">> Sending email from: "+from + " <<"); 
+            logger.info(">> Sending email with subject: "+subject + " <<"); 
  
             MimeMessageHelper helper = new MimeMessageHelper(mime, true); 
             helper.setFrom(from,senderName); 
@@ -54,7 +54,7 @@ public class EmailSender {
 		    mailSender.send(mime); 
 		    success = true; 
 		} catch (Exception e) { 
-		    logger.error("error: "+e.getMessage()); 
+		    logger.error(">> Error: "+e.getMessage() + " <<"); 
 		} 
 		
 		return success; 
