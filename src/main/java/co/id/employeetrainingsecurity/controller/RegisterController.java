@@ -33,8 +33,8 @@ public class RegisterController {
 	public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
 
 		AuthenticationResponse authenticationResponse = userService.registerManual(registerRequest);
-		return new ResponseEntity<>(authenticationResponse,
-        		HttpStatus.OK);
+        return new ResponseEntity<>(authenticationResponse.getStatus().equals(String.valueOf(200)) ? authenticationResponse.getData() : authenticationResponse, 
+        		HttpStatus.valueOf(Integer.valueOf(authenticationResponse.getStatus()))); 
 	}
 	
     @PostMapping("/send-otp") 
